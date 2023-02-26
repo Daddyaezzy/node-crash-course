@@ -28,17 +28,6 @@ const blog_create_post = (req, res) => {
     });
 };
 
-const blog_delete = (req, res) => {
-  const id = req.params.id;
-
-  Blog.findByIdAndDelete(id)
-    .then((result) => {
-      res.json({ redirect: "/blogs" });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
 const blog_details = (req, res) => {
   const id = req.params.id;
   // console.log(id);
@@ -46,6 +35,18 @@ const blog_details = (req, res) => {
   Blog.findById(id)
     .then((result) => {
       res.render("blogs/details", { blog: result, title: "Blog Details" });
+    })
+    .catch((err) => {
+      res.status(404).render("404", { title: "Blog not found" });
+    });
+};
+
+const blog_delete = (req, res) => {
+  const id = req.params.id;
+
+  Blog.findByIdAndDelete(id)
+    .then((result) => {
+      res.json({ redirect: "/blogs" });
     })
     .catch((err) => {
       console.log(err);
